@@ -9,6 +9,12 @@ public class Task {
                 new Square(1, 2),
                 new Square(3),
                 new Square(),
+                new Square("a1"),
+                new Square("h8"),
+//                new Square("i8"),
+//                new Square("a0"),
+//                new Square("Z1"),
+//                new Square("h9"),
 //                new Square(-1, 2),
 //                new Square(4, -1),
 //                new Square(-2, -1),
@@ -33,16 +39,8 @@ public class Task {
             );
         }
 
-        Square[] knightMoves = new Square[]{
-                new Square(2),
-                new Square(1, 0),
-                new Square(0, 2),
-                new Square(2, 3),
-                new Square(4),
-                new Square(6, 5),
-                new Square(4, 6),
-                new Square(6, 7),
-//                new Square(1)
+        String[] knightMoves = new String[]{
+                "c3", "b1", "a3", "b1", "c3", "d5", "e7", "d5", "b4", // "a1"
         };
 
         try {
@@ -52,7 +50,16 @@ public class Task {
         }
     }
 
-    public static void implementsKnightsMoves(Square[] squares) throws IllegalMoveException {
+    public static Square[] convertToSquares(String[] coords) {
+        Square[] squares = new Square[coords.length];
+        for (int i = 0; i < coords.length; ++i) {
+            squares[i] = new Square(coords[i]);
+        }
+        return squares;
+    }
+
+    public static void implementsKnightsMoves(String[] coords) throws IllegalMoveException {
+        Square[] squares = convertToSquares(coords);
         for (int i = 0; i < squares.length - 1; ++i) {
             if (!squares[i].checkIfExistsKnightsMove(squares[i + 1])) {
                 throw new IllegalMoveException(squares[i], squares[i + 1]);

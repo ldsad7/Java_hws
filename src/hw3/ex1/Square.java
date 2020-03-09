@@ -3,11 +3,25 @@ package hw3.ex1;
 public class Square {
     private int x;
     private int y;
-    private char[] columns = "abcdefgh".toCharArray();
-    private char[] coordNames = "xy".toCharArray();
+    private String columns = "abcdefgh";
+    private String coordNames = "xy";
 
     public Square(int x, int y) {
         this.setCoords(x, y);
+    }
+
+    public Square(String coord) {
+        if (coord.length() != 2)
+            throw new IllegalArgumentException(String.format("The coordinate (\"%s\") should be 2 chars long", coord));
+        int column_index = this.columns.indexOf(coord.charAt(0));
+        if (column_index == -1)
+            throw new IllegalArgumentException(
+                    String.format("The column letter (\"%c\") should be one of the following: \"%s\"", coord.charAt(0), this.columns)
+            );
+        int row_index = coord.charAt(1) - '0';
+        if (row_index < 1 || row_index > 8)
+            throw new IllegalArgumentException(String.format("The row coordinate (\"%c\") should be a digit >= 1 and <= 8", coord.charAt(1)));
+        this.setCoords(column_index, row_index - 1);
     }
 
     public Square(int diag) {
@@ -36,10 +50,9 @@ public class Square {
     }
 
     private void setCoord(int value, boolean first) {
-        char coordName = first ? coordNames[0] : coordNames[1];
-        if (value < 0 || value >= 8) {
+        char coordName = first ? this.coordNames.charAt(0) : this.coordNames.charAt(1);
+        if (value < 0 || value >= 8)
             throw new IllegalArgumentException(String.format("%c (%d) should be >= 0 and <= 7", coordName, value));
-        }
 
         if (first)
             this.x = value;
@@ -74,6 +87,6 @@ public class Square {
 
     @Override
     public String toString() {
-        return String.format("%c%d", this.columns[this.getXCoord()], this.getYCoord() + 1);
+        return String.format("%c%d", this.columns.charAt(this.getXCoord()), this.getYCoord() + 1);
     }
 }
