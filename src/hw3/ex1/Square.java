@@ -2,9 +2,7 @@ package hw3.ex1;
 
 public class Square {
     private static final String COLUMNS = "abcdefgh";
-    private static final String COORDNAMES = "xy";
-    private int x;
-    private int y;
+    private int x, y;
 
     public Square(int x, int y) {
         this.setCoords(x, y);
@@ -13,15 +11,7 @@ public class Square {
     public Square(String coord) {
         if (coord.length() != 2)
             throw new IllegalArgumentException(String.format("The coordinate (\"%s\") should be 2 chars long", coord));
-        int column_index = COLUMNS.indexOf(coord.charAt(0));
-        if (column_index == -1)
-            throw new IllegalArgumentException(
-                    String.format("The column letter (\"%c\") should be one of the following: \"%s\"", coord.charAt(0), COLUMNS)
-            );
-        int row_index = coord.charAt(1) - '0';
-        if (row_index < 1 || row_index > 8)
-            throw new IllegalArgumentException(String.format("The row coordinate (\"%c\") should be a digit >= 1 and <= 8", coord.charAt(1)));
-        this.setCoords(column_index, row_index - 1);
+        this.setCoords(coord.charAt(0) - 'a', coord.charAt(1) - '1');
     }
 
     public Square(int diag) {
@@ -46,18 +36,13 @@ public class Square {
     }
 
     public void setXCoord(int x) {
-        this.setCoord(x, true);
+        checkCoord(x, 'x');
+        this.x = x;
     }
 
-    private void setCoord(int value, boolean first) {
-        char coordName = first ? COORDNAMES.charAt(0) : COORDNAMES.charAt(1);
+    private void checkCoord(int value, char coordName) {
         if (value < 0 || value >= 8)
             throw new IllegalArgumentException(String.format("%c (%d) should be >= 0 and <= 7", coordName, value));
-
-        if (first)
-            this.x = value;
-        else
-            this.y = value;
     }
 
     public int getYCoord() {
@@ -65,11 +50,8 @@ public class Square {
     }
 
     public void setYCoord(int y) {
-        this.setCoord(y, false);
-    }
-
-    public int[] countAbsDistance(Square square) {
-        return new int[]{this.countAbsXDistance(square), this.countAbsYDistance(square)};
+        checkCoord(y, 'y');
+        this.y = y;
     }
 
     private int countAbsXDistance(Square square) {
@@ -81,8 +63,9 @@ public class Square {
     }
 
     public boolean checkIfExistsKnightsMove(Square square) {
-        int[] distance = this.countAbsDistance(square);
-        return (distance[0] == 2 && distance[1] == 1) || (distance[0] == 1 && distance[1] == 2);
+        int dx = this.countAbsXDistance(square);
+        int dy = this.countAbsYDistance(square);
+        return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
     }
 
     @Override

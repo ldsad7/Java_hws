@@ -45,6 +45,7 @@ public class Task {
 
         try {
             implementsKnightsMoves(knightMoves);
+            System.out.println("OK");
         } catch (IllegalMoveException e) {
             System.err.print(e.getMessage());
         }
@@ -65,6 +66,5 @@ public class Task {
                 throw new IllegalMoveException(squares[i], squares[i + 1]);
             }
         }
-        System.out.println("OK");
     }
 }
