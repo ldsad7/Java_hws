@@ -24,12 +24,14 @@ import static hw4.ex1.Task.checkFile;
  * и не всегда могут поместиться в оперативной памяти целиком.
  */
 public class Task {
+    public static PriorityQueue<Triple> heap = new PriorityQueue<>(1);
+
     public static void main(String[] args) throws IOException {
         int length = args.length;
         if (length == 0)
             throw new IllegalArgumentException("No files given");
         BufferedReader[] readers = new BufferedReader[length];
-        PriorityQueue<Triple> heap = new PriorityQueue<>(length);
+
         for (int i = 0; i < length; ++i) {
             readers[i] = Files.newBufferedReader(checkFile(args[i]));
             addElementToHeapQueue(readers[i], heap, i);
